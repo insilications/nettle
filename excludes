@@ -1,0 +1,4 @@
+/usr/bin/nettle-hash
+/usr/bin/nettle-lfib-stream
+/usr/bin/pkcs1-conv
+/usr/bin/sexp-conv
