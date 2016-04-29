@@ -4,7 +4,7 @@
 #
 Name     : nettle
 Version  : 3.2
-Release  : 15
+Release  : 16
 URL      : https://ftp.gnu.org/gnu/nettle/nettle-3.2.tar.gz
 Source0  : https://ftp.gnu.org/gnu/nettle/nettle-3.2.tar.gz
 Summary  : Nettle low-level cryptographic library (symmetric algorithms)
