@@ -6,7 +6,7 @@
 #
 Name     : nettle
 Version  : 3.3
-Release  : 19
+Release  : 20
 URL      : https://ftp.gnu.org/gnu/nettle/nettle-3.3.tar.gz
 Source0  : https://ftp.gnu.org/gnu/nettle/nettle-3.3.tar.gz
 Summary  : Nettle low-level cryptographic library (symmetric algorithms)
@@ -21,6 +21,7 @@ BuildRequires : gcc-libstdc++32
 BuildRequires : glibc-dev32
 BuildRequires : glibc-libc32
 BuildRequires : gmp-dev
+BuildRequires : gmp-dev32
 BuildRequires : texinfo
 
 %description
@@ -111,7 +112,7 @@ popd
 
 %build
 export LANG=C
-export SOURCE_DATE_EPOCH=1483229357
+export SOURCE_DATE_EPOCH=1483230931
 %configure --disable-static --enable-shared --enable-static
 make V=1  %{?_smp_mflags}
 
