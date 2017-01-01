@@ -6,7 +6,7 @@
 #
 Name     : nettle
 Version  : 3.3
-Release  : 20
+Release  : 21
 URL      : https://ftp.gnu.org/gnu/nettle/nettle-3.3.tar.gz
 Source0  : https://ftp.gnu.org/gnu/nettle/nettle-3.3.tar.gz
 Summary  : Nettle low-level cryptographic library (symmetric algorithms)
@@ -22,6 +22,7 @@ BuildRequires : glibc-dev32
 BuildRequires : glibc-libc32
 BuildRequires : gmp-dev
 BuildRequires : gmp-dev32
+BuildRequires : gmp-lib32
 BuildRequires : texinfo
 
 %description
@@ -112,7 +113,7 @@ popd
 
 %build
 export LANG=C
-export SOURCE_DATE_EPOCH=1483230931
+export SOURCE_DATE_EPOCH=1483231230
 %configure --disable-static --enable-shared --enable-static
 make V=1  %{?_smp_mflags}
 
@@ -222,8 +223,11 @@ popd
 
 %files dev32
 %defattr(-,root,root,-)
+/usr/lib32/libhogweed.so
 /usr/lib32/libnettle.so
+/usr/lib32/pkgconfig/32hogweed.pc
 /usr/lib32/pkgconfig/32nettle.pc
+/usr/lib32/pkgconfig/hogweed.pc
 /usr/lib32/pkgconfig/nettle.pc
 
 %files doc
@@ -239,5 +243,7 @@ popd
 
 %files lib32
 %defattr(-,root,root,-)
+/usr/lib32/libhogweed.so.4
+/usr/lib32/libhogweed.so.4.3
 /usr/lib32/libnettle.so.6
 /usr/lib32/libnettle.so.6.3
