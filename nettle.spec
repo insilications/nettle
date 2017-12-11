@@ -5,11 +5,11 @@
 # Source0 file verified with key 0xF3599FF828C67298 (nisse@lysator.liu.se)
 #
 Name     : nettle
-Version  : 3.3
-Release  : 24
-URL      : https://ftp.gnu.org/gnu/nettle/nettle-3.3.tar.gz
-Source0  : https://ftp.gnu.org/gnu/nettle/nettle-3.3.tar.gz
-Source99 : https://ftp.gnu.org/gnu/nettle/nettle-3.3.tar.gz.asc
+Version  : 3.4
+Release  : 25
+URL      : https://ftp.gnu.org/gnu/nettle/nettle-3.4.tar.gz
+Source0  : https://ftp.gnu.org/gnu/nettle/nettle-3.4.tar.gz
+Source99 : https://ftp.gnu.org/gnu/nettle/nettle-3.4.tar.gz.sig
 Summary  : Nettle low-level cryptographic library (symmetric algorithms)
 Group    : Development/Tools
 License  : GPL-2.0 GPL-3.0 LGPL-2.0+ LGPL-3.0
@@ -25,6 +25,7 @@ BuildRequires : glibc-libc32
 BuildRequires : gmp-dev
 BuildRequires : gmp-dev32
 BuildRequires : gmp-lib32
+BuildRequires : openssl-dev
 BuildRequires : texinfo
 
 %description
@@ -108,9 +109,9 @@ lib32 components for the nettle package.
 
 
 %prep
-%setup -q -n nettle-3.3
+%setup -q -n nettle-3.4
 pushd ..
-cp -a nettle-3.3 build32
+cp -a nettle-3.4 build32
 popd
 
 %build
@@ -118,17 +119,17 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1493138742
-%configure --disable-static --enable-shared --enable-static
-make V=1  %{?_smp_mflags}
+export SOURCE_DATE_EPOCH=1513001629
+%configure --disable-static --disable-openssl --enable-shared --enable-static  --enable-x86-aesni
+make  %{?_smp_mflags}
 
 pushd ../build32/
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
 export CFLAGS="$CFLAGS -m32"
 export CXXFLAGS="$CXXFLAGS -m32"
 export LDFLAGS="$LDFLAGS -m32"
-%configure --disable-static --enable-shared --enable-static   --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
-make V=1  %{?_smp_mflags}
+%configure --disable-static --disable-openssl --enable-shared --enable-static  --enable-x86-aesni   --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
+make  %{?_smp_mflags}
 popd
 %check
 export LANG=C
@@ -138,7 +139,7 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 cd testsuite ; make check
 
 %install
-export SOURCE_DATE_EPOCH=1493138742
+export SOURCE_DATE_EPOCH=1513001629
 rm -rf %{buildroot}
 pushd ../build32/
 %make_install32
@@ -177,6 +178,7 @@ popd
 /usr/include/nettle/cast128.h
 /usr/include/nettle/cbc.h
 /usr/include/nettle/ccm.h
+/usr/include/nettle/cfb.h
 /usr/include/nettle/chacha-poly1305.h
 /usr/include/nettle/chacha.h
 /usr/include/nettle/ctr.h
@@ -192,6 +194,7 @@ popd
 /usr/include/nettle/eddsa.h
 /usr/include/nettle/gcm.h
 /usr/include/nettle/gosthash94.h
+/usr/include/nettle/hkdf.h
 /usr/include/nettle/hmac.h
 /usr/include/nettle/knuth-lfib.h
 /usr/include/nettle/macros.h
@@ -208,6 +211,8 @@ popd
 /usr/include/nettle/pgp.h
 /usr/include/nettle/pkcs1.h
 /usr/include/nettle/poly1305.h
+/usr/include/nettle/pss-mgf1.h
+/usr/include/nettle/pss.h
 /usr/include/nettle/realloc.h
 /usr/include/nettle/ripemd160.h
 /usr/include/nettle/rsa.h
@@ -243,13 +248,13 @@ popd
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/libhogweed.so.4
-/usr/lib64/libhogweed.so.4.3
+/usr/lib64/libhogweed.so.4.4
 /usr/lib64/libnettle.so.6
-/usr/lib64/libnettle.so.6.3
+/usr/lib64/libnettle.so.6.4
 
 %files lib32
 %defattr(-,root,root,-)
 /usr/lib32/libhogweed.so.4
-/usr/lib32/libhogweed.so.4.3
+/usr/lib32/libhogweed.so.4.4
 /usr/lib32/libnettle.so.6
-/usr/lib32/libnettle.so.6.3
+/usr/lib32/libnettle.so.6.4
