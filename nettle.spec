@@ -6,7 +6,7 @@
 #
 Name     : nettle
 Version  : 3.4
-Release  : 25
+Release  : 26
 URL      : https://ftp.gnu.org/gnu/nettle/nettle-3.4.tar.gz
 Source0  : https://ftp.gnu.org/gnu/nettle/nettle-3.4.tar.gz
 Source99 : https://ftp.gnu.org/gnu/nettle/nettle-3.4.tar.gz.sig
