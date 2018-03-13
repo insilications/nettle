@@ -6,10 +6,10 @@
 #
 Name     : nettle
 Version  : 3.4
-Release  : 26
-URL      : https://ftp.gnu.org/gnu/nettle/nettle-3.4.tar.gz
-Source0  : https://ftp.gnu.org/gnu/nettle/nettle-3.4.tar.gz
-Source99 : https://ftp.gnu.org/gnu/nettle/nettle-3.4.tar.gz.sig
+Release  : 27
+URL      : https://mirrors.kernel.org/gnu/nettle/nettle-3.4.tar.gz
+Source0  : https://mirrors.kernel.org/gnu/nettle/nettle-3.4.tar.gz
+Source99 : https://mirrors.kernel.org/gnu/nettle/nettle-3.4.tar.gz.sig
 Summary  : Nettle low-level cryptographic library (symmetric algorithms)
 Group    : Development/Tools
 License  : GPL-2.0 GPL-3.0 LGPL-2.0+ LGPL-3.0
@@ -119,7 +119,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1513001629
+export SOURCE_DATE_EPOCH=1520913280
 %configure --disable-static --disable-openssl --enable-shared --enable-static  --enable-x86-aesni
 make  %{?_smp_mflags}
 
@@ -139,7 +139,7 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 cd testsuite ; make check
 
 %install
-export SOURCE_DATE_EPOCH=1513001629
+export SOURCE_DATE_EPOCH=1520913280
 rm -rf %{buildroot}
 pushd ../build32/
 %make_install32
