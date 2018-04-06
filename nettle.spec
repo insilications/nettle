@@ -6,7 +6,7 @@
 #
 Name     : nettle
 Version  : 3.4
-Release  : 27
+Release  : 28
 URL      : https://mirrors.kernel.org/gnu/nettle/nettle-3.4.tar.gz
 Source0  : https://mirrors.kernel.org/gnu/nettle/nettle-3.4.tar.gz
 Source99 : https://mirrors.kernel.org/gnu/nettle/nettle-3.4.tar.gz.sig
@@ -113,13 +113,16 @@ lib32 components for the nettle package.
 pushd ..
 cp -a nettle-3.4 build32
 popd
+pushd ..
+cp -a nettle-3.4 buildavx2
+popd
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1520913280
+export SOURCE_DATE_EPOCH=1523021226
 %configure --disable-static --disable-openssl --enable-shared --enable-static  --enable-x86-aesni
 make  %{?_smp_mflags}
 
@@ -131,6 +134,14 @@ export LDFLAGS="$LDFLAGS -m32"
 %configure --disable-static --disable-openssl --enable-shared --enable-static  --enable-x86-aesni   --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
 make  %{?_smp_mflags}
 popd
+unset PKG_CONFIG_PATH
+pushd ../buildavx2/
+export CFLAGS="$CFLAGS -m64 -march=haswell"
+export CXXFLAGS="$CXXFLAGS -m64 -march=haswell"
+export LDFLAGS="$LDFLAGS -m64 -march=haswell"
+%configure --disable-static --disable-openssl --enable-shared --enable-static  --enable-x86-aesni   --libdir=/usr/lib64/haswell --bindir=/usr/bin/haswell
+make  %{?_smp_mflags}
+popd
 %check
 export LANG=C
 export http_proxy=http://127.0.0.1:9/
@@ -139,7 +150,7 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 cd testsuite ; make check
 
 %install
-export SOURCE_DATE_EPOCH=1520913280
+export SOURCE_DATE_EPOCH=1523021226
 rm -rf %{buildroot}
 pushd ../build32/
 %make_install32
@@ -149,6 +160,9 @@ pushd %{buildroot}/usr/lib32/pkgconfig
 for i in *.pc ; do ln -s $i 32$i ; done
 popd
 fi
+popd
+pushd ../buildavx2/
+%make_install
 popd
 %make_install
 
@@ -161,6 +175,11 @@ popd
 %exclude /usr/bin/nettle-lfib-stream
 %exclude /usr/bin/pkcs1-conv
 %exclude /usr/bin/sexp-conv
+/usr/bin/haswell/nettle-hash
+/usr/bin/haswell/nettle-lfib-stream
+/usr/bin/haswell/nettle-pbkdf2
+/usr/bin/haswell/pkcs1-conv
+/usr/bin/haswell/sexp-conv
 /usr/bin/nettle-pbkdf2
 
 %files dev
@@ -227,6 +246,8 @@ popd
 /usr/include/nettle/umac.h
 /usr/include/nettle/version.h
 /usr/include/nettle/yarrow.h
+/usr/lib64/haswell/libhogweed.so
+/usr/lib64/haswell/libnettle.so
 /usr/lib64/libhogweed.so
 /usr/lib64/libnettle.so
 /usr/lib64/pkgconfig/hogweed.pc
@@ -247,6 +268,10 @@ popd
 
 %files lib
 %defattr(-,root,root,-)
+/usr/lib64/haswell/libhogweed.so.4
+/usr/lib64/haswell/libhogweed.so.4.4
+/usr/lib64/haswell/libnettle.so.6
+/usr/lib64/haswell/libnettle.so.6.4
 /usr/lib64/libhogweed.so.4
 /usr/lib64/libhogweed.so.4.4
 /usr/lib64/libnettle.so.6
