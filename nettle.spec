@@ -6,7 +6,7 @@
 #
 Name     : nettle
 Version  : 3.4
-Release  : 28
+Release  : 29
 URL      : https://mirrors.kernel.org/gnu/nettle/nettle-3.4.tar.gz
 Source0  : https://mirrors.kernel.org/gnu/nettle/nettle-3.4.tar.gz
 Source99 : https://mirrors.kernel.org/gnu/nettle/nettle-3.4.tar.gz.sig
@@ -122,7 +122,11 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1523021226
+export SOURCE_DATE_EPOCH=1523021876
+export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export FFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 %configure --disable-static --disable-openssl --enable-shared --enable-static  --enable-x86-aesni
 make  %{?_smp_mflags}
 
@@ -150,7 +154,7 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 cd testsuite ; make check
 
 %install
-export SOURCE_DATE_EPOCH=1523021226
+export SOURCE_DATE_EPOCH=1523021876
 rm -rf %{buildroot}
 pushd ../build32/
 %make_install32
