@@ -6,7 +6,7 @@
 #
 Name     : nettle
 Version  : 3.4
-Release  : 30
+Release  : 31
 URL      : https://mirrors.kernel.org/gnu/nettle/nettle-3.4.tar.gz
 Source0  : https://mirrors.kernel.org/gnu/nettle/nettle-3.4.tar.gz
 Source99 : https://mirrors.kernel.org/gnu/nettle/nettle-3.4.tar.gz.sig
@@ -15,7 +15,6 @@ Group    : Development/Tools
 License  : GPL-2.0 GPL-3.0 LGPL-2.0+ LGPL-3.0
 Requires: nettle-bin
 Requires: nettle-lib
-Requires: nettle-doc
 Requires: p11-kit
 BuildRequires : gcc-dev32
 BuildRequires : gcc-libgcc32
@@ -122,7 +121,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1523021876
+export SOURCE_DATE_EPOCH=1528097327
 export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 export FFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
@@ -143,7 +142,7 @@ pushd ../buildavx2/
 export CFLAGS="$CFLAGS -m64 -march=haswell"
 export CXXFLAGS="$CXXFLAGS -m64 -march=haswell"
 export LDFLAGS="$LDFLAGS -m64 -march=haswell"
-%configure --disable-static --disable-openssl --enable-shared --enable-static  --enable-x86-aesni   --libdir=/usr/lib64/haswell --bindir=/usr/bin/haswell
+%configure --disable-static --disable-openssl --enable-shared --enable-static  --enable-x86-aesni   --libdir=/usr/lib64/haswell
 make  %{?_smp_mflags}
 popd
 %check
@@ -154,7 +153,7 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 cd testsuite ; make check
 
 %install
-export SOURCE_DATE_EPOCH=1523021876
+export SOURCE_DATE_EPOCH=1528097327
 rm -rf %{buildroot}
 pushd ../build32/
 %make_install32
@@ -179,11 +178,6 @@ popd
 %exclude /usr/bin/nettle-lfib-stream
 %exclude /usr/bin/pkcs1-conv
 %exclude /usr/bin/sexp-conv
-/usr/bin/haswell/nettle-hash
-/usr/bin/haswell/nettle-lfib-stream
-/usr/bin/haswell/nettle-pbkdf2
-/usr/bin/haswell/pkcs1-conv
-/usr/bin/haswell/sexp-conv
 /usr/bin/nettle-pbkdf2
 
 %files dev
