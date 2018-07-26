@@ -6,7 +6,7 @@
 #
 Name     : nettle
 Version  : 3.4
-Release  : 31
+Release  : 32
 URL      : https://mirrors.kernel.org/gnu/nettle/nettle-3.4.tar.gz
 Source0  : https://mirrors.kernel.org/gnu/nettle/nettle-3.4.tar.gz
 Source99 : https://mirrors.kernel.org/gnu/nettle/nettle-3.4.tar.gz.sig
@@ -15,6 +15,7 @@ Group    : Development/Tools
 License  : GPL-2.0 GPL-3.0 LGPL-2.0+ LGPL-3.0
 Requires: nettle-bin
 Requires: nettle-lib
+Requires: nettle-license
 Requires: p11-kit
 BuildRequires : gcc-dev32
 BuildRequires : gcc-libgcc32
@@ -56,6 +57,7 @@ of the library.
 %package bin
 Summary: bin components for the nettle package.
 Group: Binaries
+Requires: nettle-license
 
 %description bin
 bin components for the nettle package.
@@ -91,9 +93,18 @@ Group: Documentation
 doc components for the nettle package.
 
 
+%package extras
+Summary: extras components for the nettle package.
+Group: Default
+
+%description extras
+extras components for the nettle package.
+
+
 %package lib
 Summary: lib components for the nettle package.
 Group: Libraries
+Requires: nettle-license
 
 %description lib
 lib components for the nettle package.
@@ -102,9 +113,18 @@ lib components for the nettle package.
 %package lib32
 Summary: lib32 components for the nettle package.
 Group: Default
+Requires: nettle-license
 
 %description lib32
 lib32 components for the nettle package.
+
+
+%package license
+Summary: license components for the nettle package.
+Group: Default
+
+%description license
+license components for the nettle package.
 
 
 %prep
@@ -121,7 +141,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1528097327
+export SOURCE_DATE_EPOCH=1532645045
 export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 export FFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
@@ -142,7 +162,7 @@ pushd ../buildavx2/
 export CFLAGS="$CFLAGS -m64 -march=haswell"
 export CXXFLAGS="$CXXFLAGS -m64 -march=haswell"
 export LDFLAGS="$LDFLAGS -m64 -march=haswell"
-%configure --disable-static --disable-openssl --enable-shared --enable-static  --enable-x86-aesni   --libdir=/usr/lib64/haswell
+%configure --disable-static --disable-openssl --enable-shared --enable-static  --enable-x86-aesni
 make  %{?_smp_mflags}
 popd
 %check
@@ -153,8 +173,12 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 cd testsuite ; make check
 
 %install
-export SOURCE_DATE_EPOCH=1528097327
+export SOURCE_DATE_EPOCH=1532645045
 rm -rf %{buildroot}
+mkdir -p %{buildroot}/usr/share/doc/nettle
+cp COPYINGv2 %{buildroot}/usr/share/doc/nettle/COPYINGv2
+cp COPYING.LESSERv3 %{buildroot}/usr/share/doc/nettle/COPYING.LESSERv3
+cp COPYINGv3 %{buildroot}/usr/share/doc/nettle/COPYINGv3
 pushd ../build32/
 %make_install32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
@@ -165,7 +189,7 @@ popd
 fi
 popd
 pushd ../buildavx2/
-%make_install
+%make_install_avx2
 popd
 %make_install
 
@@ -178,6 +202,11 @@ popd
 %exclude /usr/bin/nettle-lfib-stream
 %exclude /usr/bin/pkcs1-conv
 %exclude /usr/bin/sexp-conv
+/usr/bin/haswell/nettle-hash
+/usr/bin/haswell/nettle-lfib-stream
+/usr/bin/haswell/nettle-pbkdf2
+/usr/bin/haswell/pkcs1-conv
+/usr/bin/haswell/sexp-conv
 /usr/bin/nettle-pbkdf2
 
 %files dev
@@ -261,15 +290,22 @@ popd
 /usr/lib32/pkgconfig/nettle.pc
 
 %files doc
-%defattr(-,root,root,-)
+%defattr(0644,root,root,0755)
 %doc /usr/share/info/*
 
-%files lib
+%files extras
 %defattr(-,root,root,-)
 /usr/lib64/haswell/libhogweed.so.4
 /usr/lib64/haswell/libhogweed.so.4.4
 /usr/lib64/haswell/libnettle.so.6
 /usr/lib64/haswell/libnettle.so.6.4
+
+%files lib
+%defattr(-,root,root,-)
+%exclude /usr/lib64/haswell/libhogweed.so.4
+%exclude /usr/lib64/haswell/libhogweed.so.4.4
+%exclude /usr/lib64/haswell/libnettle.so.6
+%exclude /usr/lib64/haswell/libnettle.so.6.4
 /usr/lib64/libhogweed.so.4
 /usr/lib64/libhogweed.so.4.4
 /usr/lib64/libnettle.so.6
@@ -281,3 +317,9 @@ popd
 /usr/lib32/libhogweed.so.4.4
 /usr/lib32/libnettle.so.6
 /usr/lib32/libnettle.so.6.4
+
+%files license
+%defattr(-,root,root,-)
+/usr/share/doc/nettle/COPYING.LESSERv3
+/usr/share/doc/nettle/COPYINGv2
+/usr/share/doc/nettle/COPYINGv3
