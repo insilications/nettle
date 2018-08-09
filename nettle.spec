@@ -6,7 +6,7 @@
 #
 Name     : nettle
 Version  : 3.4
-Release  : 33
+Release  : 34
 URL      : https://mirrors.kernel.org/gnu/nettle/nettle-3.4.tar.gz
 Source0  : https://mirrors.kernel.org/gnu/nettle/nettle-3.4.tar.gz
 Source99 : https://mirrors.kernel.org/gnu/nettle/nettle-3.4.tar.gz.sig
