@@ -6,7 +6,7 @@
 #
 Name     : nettle
 Version  : 3.4
-Release  : 34
+Release  : 35
 URL      : https://mirrors.kernel.org/gnu/nettle/nettle-3.4.tar.gz
 Source0  : https://mirrors.kernel.org/gnu/nettle/nettle-3.4.tar.gz
 Source99 : https://mirrors.kernel.org/gnu/nettle/nettle-3.4.tar.gz.sig
@@ -141,7 +141,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1533697256
+export SOURCE_DATE_EPOCH=1533912840
 export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 export FFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
@@ -175,7 +175,7 @@ make -C ../buildavx2/testsuite check
 make -C ../build32/testsuite check
 
 %install
-export SOURCE_DATE_EPOCH=1533697256
+export SOURCE_DATE_EPOCH=1533912840
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/doc/nettle
 cp COPYING.LESSERv3 %{buildroot}/usr/share/doc/nettle/COPYING.LESSERv3
@@ -213,6 +213,8 @@ popd
 
 %files dev
 %defattr(-,root,root,-)
+%exclude /usr/lib64/haswell/libhogweed.so
+%exclude /usr/lib64/haswell/libnettle.so
 /usr/include/nettle/aes.h
 /usr/include/nettle/arcfour.h
 /usr/include/nettle/arctwo.h
@@ -275,8 +277,6 @@ popd
 /usr/include/nettle/umac.h
 /usr/include/nettle/version.h
 /usr/include/nettle/yarrow.h
-/usr/lib64/haswell/libhogweed.so
-/usr/lib64/haswell/libnettle.so
 /usr/lib64/libhogweed.so
 /usr/lib64/libnettle.so
 /usr/lib64/pkgconfig/hogweed.pc
@@ -297,8 +297,10 @@ popd
 
 %files extras
 %defattr(-,root,root,-)
+/usr/lib64/haswell/libhogweed.so
 /usr/lib64/haswell/libhogweed.so.4
 /usr/lib64/haswell/libhogweed.so.4.4
+/usr/lib64/haswell/libnettle.so
 /usr/lib64/haswell/libnettle.so.6
 /usr/lib64/haswell/libnettle.so.6.4
 

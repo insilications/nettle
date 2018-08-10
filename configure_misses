@@ -21,23 +21,6 @@ Configure miss: /opt/gnu/lib
 Configure miss: /sw/gnu/lib
 Configure miss: /usr/freeware/lib
 Configure miss: /usr/pkg/lib
-Configure miss: i686-generic-linux-gnu-gcc
-Configure miss: i686-generic-linux-gnu-g++
-Configure miss: i686-generic-linux-gnu-c++
-Configure miss: i686-generic-linux-gnu-gpp
-Configure miss: i686-generic-linux-gnu-aCC
-Configure miss: i686-generic-linux-gnu-CC
-Configure miss: i686-generic-linux-gnu-cxx
-Configure miss: i686-generic-linux-gnu-cc++
-Configure miss: i686-generic-linux-gnu-cl.exe
-Configure miss: i686-generic-linux-gnu-FCC
-Configure miss: i686-generic-linux-gnu-KCC
-Configure miss: i686-generic-linux-gnu-RCC
-Configure miss: i686-generic-linux-gnu-xlC_r
-Configure miss: i686-generic-linux-gnu-xlC
-Configure miss: i686-generic-linux-gnu-ranlib
-Configure miss: i686-generic-linux-gnu-nm
-Configure miss: i686-generic-linux-gnu-ar
 Configure miss: valgrind/memcheck.h usability
 Configure miss: valgrind/memcheck.h presence
 Configure miss: valgrind/memcheck.h
