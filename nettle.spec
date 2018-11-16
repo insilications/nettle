@@ -6,16 +6,16 @@
 #
 Name     : nettle
 Version  : 3.4
-Release  : 36
+Release  : 37
 URL      : https://mirrors.kernel.org/gnu/nettle/nettle-3.4.tar.gz
 Source0  : https://mirrors.kernel.org/gnu/nettle/nettle-3.4.tar.gz
 Source99 : https://mirrors.kernel.org/gnu/nettle/nettle-3.4.tar.gz.sig
 Summary  : Nettle low-level cryptographic library (symmetric algorithms)
 Group    : Development/Tools
 License  : GPL-2.0 GPL-3.0 LGPL-2.0+ LGPL-3.0
-Requires: nettle-bin
-Requires: nettle-lib
-Requires: nettle-license
+Requires: nettle-bin = %{version}-%{release}
+Requires: nettle-lib = %{version}-%{release}
+Requires: nettle-license = %{version}-%{release}
 Requires: p11-kit
 BuildRequires : gcc-dev32
 BuildRequires : gcc-libgcc32
@@ -57,7 +57,7 @@ of the library.
 %package bin
 Summary: bin components for the nettle package.
 Group: Binaries
-Requires: nettle-license
+Requires: nettle-license = %{version}-%{release}
 
 %description bin
 bin components for the nettle package.
@@ -66,9 +66,9 @@ bin components for the nettle package.
 %package dev
 Summary: dev components for the nettle package.
 Group: Development
-Requires: nettle-lib
-Requires: nettle-bin
-Provides: nettle-devel
+Requires: nettle-lib = %{version}-%{release}
+Requires: nettle-bin = %{version}-%{release}
+Provides: nettle-devel = %{version}-%{release}
 
 %description dev
 dev components for the nettle package.
@@ -77,9 +77,9 @@ dev components for the nettle package.
 %package dev32
 Summary: dev32 components for the nettle package.
 Group: Default
-Requires: nettle-lib32
-Requires: nettle-bin
-Requires: nettle-dev
+Requires: nettle-lib32 = %{version}-%{release}
+Requires: nettle-bin = %{version}-%{release}
+Requires: nettle-dev = %{version}-%{release}
 
 %description dev32
 dev32 components for the nettle package.
@@ -104,7 +104,7 @@ extras components for the nettle package.
 %package lib
 Summary: lib components for the nettle package.
 Group: Libraries
-Requires: nettle-license
+Requires: nettle-license = %{version}-%{release}
 
 %description lib
 lib components for the nettle package.
@@ -113,7 +113,7 @@ lib components for the nettle package.
 %package lib32
 Summary: lib32 components for the nettle package.
 Group: Default
-Requires: nettle-license
+Requires: nettle-license = %{version}-%{release}
 
 %description lib32
 lib32 components for the nettle package.
@@ -141,7 +141,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1533912840
+export SOURCE_DATE_EPOCH=1542406392
 export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 export FFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
@@ -151,6 +151,7 @@ make  %{?_smp_mflags}
 
 pushd ../build32/
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+export ASFLAGS="$ASFLAGS --32"
 export CFLAGS="$CFLAGS -m32"
 export CXXFLAGS="$CXXFLAGS -m32"
 export LDFLAGS="$LDFLAGS -m32"
@@ -175,12 +176,12 @@ make -C ../buildavx2/testsuite check
 make -C ../build32/testsuite check
 
 %install
-export SOURCE_DATE_EPOCH=1533912840
+export SOURCE_DATE_EPOCH=1542406392
 rm -rf %{buildroot}
-mkdir -p %{buildroot}/usr/share/doc/nettle
-cp COPYING.LESSERv3 %{buildroot}/usr/share/doc/nettle/COPYING.LESSERv3
-cp COPYINGv2 %{buildroot}/usr/share/doc/nettle/COPYINGv2
-cp COPYINGv3 %{buildroot}/usr/share/doc/nettle/COPYINGv3
+mkdir -p %{buildroot}/usr/share/package-licenses/nettle
+cp COPYING.LESSERv3 %{buildroot}/usr/share/package-licenses/nettle/COPYING.LESSERv3
+cp COPYINGv2 %{buildroot}/usr/share/package-licenses/nettle/COPYINGv2
+cp COPYINGv3 %{buildroot}/usr/share/package-licenses/nettle/COPYINGv3
 pushd ../build32/
 %make_install32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
@@ -323,7 +324,7 @@ popd
 /usr/lib32/libnettle.so.6.4
 
 %files license
-%defattr(-,root,root,-)
-/usr/share/doc/nettle/COPYING.LESSERv3
-/usr/share/doc/nettle/COPYINGv2
-/usr/share/doc/nettle/COPYINGv3
+%defattr(0644,root,root,0755)
+/usr/share/package-licenses/nettle/COPYING.LESSERv3
+/usr/share/package-licenses/nettle/COPYINGv2
+/usr/share/package-licenses/nettle/COPYINGv3
