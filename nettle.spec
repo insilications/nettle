@@ -5,11 +5,11 @@
 # Source0 file verified with key 0xF3599FF828C67298 (nisse@lysator.liu.se)
 #
 Name     : nettle
-Version  : 3.4
-Release  : 37
-URL      : https://mirrors.kernel.org/gnu/nettle/nettle-3.4.tar.gz
-Source0  : https://mirrors.kernel.org/gnu/nettle/nettle-3.4.tar.gz
-Source99 : https://mirrors.kernel.org/gnu/nettle/nettle-3.4.tar.gz.sig
+Version  : 3.4.1
+Release  : 38
+URL      : https://mirrors.kernel.org/gnu/nettle/nettle-3.4.1.tar.gz
+Source0  : https://mirrors.kernel.org/gnu/nettle/nettle-3.4.1.tar.gz
+Source99 : https://mirrors.kernel.org/gnu/nettle/nettle-3.4.1.tar.gz.sig
 Summary  : Nettle low-level cryptographic library (symmetric algorithms)
 Group    : Development/Tools
 License  : GPL-2.0 GPL-3.0 LGPL-2.0+ LGPL-3.0
@@ -128,12 +128,12 @@ license components for the nettle package.
 
 
 %prep
-%setup -q -n nettle-3.4
+%setup -q -n nettle-3.4.1
 pushd ..
-cp -a nettle-3.4 build32
+cp -a nettle-3.4.1 build32
 popd
 pushd ..
-cp -a nettle-3.4 buildavx2
+cp -a nettle-3.4.1 buildavx2
 popd
 
 %build
@@ -141,7 +141,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1542406392
+export SOURCE_DATE_EPOCH=1543999830
 export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 export FFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
@@ -176,7 +176,7 @@ make -C ../buildavx2/testsuite check
 make -C ../build32/testsuite check
 
 %install
-export SOURCE_DATE_EPOCH=1542406392
+export SOURCE_DATE_EPOCH=1543999830
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/nettle
 cp COPYING.LESSERv3 %{buildroot}/usr/share/package-licenses/nettle/COPYING.LESSERv3
@@ -300,28 +300,26 @@ popd
 %defattr(-,root,root,-)
 /usr/lib64/haswell/libhogweed.so
 /usr/lib64/haswell/libhogweed.so.4
-/usr/lib64/haswell/libhogweed.so.4.4
 /usr/lib64/haswell/libnettle.so
 /usr/lib64/haswell/libnettle.so.6
-/usr/lib64/haswell/libnettle.so.6.4
 
 %files lib
 %defattr(-,root,root,-)
 %exclude /usr/lib64/haswell/libhogweed.so.4
-%exclude /usr/lib64/haswell/libhogweed.so.4.4
 %exclude /usr/lib64/haswell/libnettle.so.6
-%exclude /usr/lib64/haswell/libnettle.so.6.4
+/usr/lib64/haswell/libhogweed.so.4.5
+/usr/lib64/haswell/libnettle.so.6.5
 /usr/lib64/libhogweed.so.4
-/usr/lib64/libhogweed.so.4.4
+/usr/lib64/libhogweed.so.4.5
 /usr/lib64/libnettle.so.6
-/usr/lib64/libnettle.so.6.4
+/usr/lib64/libnettle.so.6.5
 
 %files lib32
 %defattr(-,root,root,-)
 /usr/lib32/libhogweed.so.4
-/usr/lib32/libhogweed.so.4.4
+/usr/lib32/libhogweed.so.4.5
 /usr/lib32/libnettle.so.6
-/usr/lib32/libnettle.so.6.4
+/usr/lib32/libnettle.so.6.5
 
 %files license
 %defattr(0644,root,root,0755)
