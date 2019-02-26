@@ -28,18 +28,3 @@ Configure miss: if globals are prefixed by underscore
 Configure miss: ELF-style .type,#function pseudo-ops
 Configure miss: COFF-style .type directive
 Configure miss: if .align assembly directive is logarithmic
-Configure miss: /usr/local/lib
-Configure miss: /sw/local/lib
-Configure miss: /sw/lib
-Configure miss: /usr/gnu/lib
-Configure miss: /opt/gnu/lib
-Configure miss: /sw/gnu/lib
-Configure miss: /usr/freeware/lib
-Configure miss: /usr/pkg/lib
-Configure miss: valgrind/memcheck.h usability
-Configure miss: valgrind/memcheck.h presence
-Configure miss: valgrind/memcheck.h
-Configure miss: if globals are prefixed by underscore
-Configure miss: ELF-style .type,#function pseudo-ops
-Configure miss: COFF-style .type directive
-Configure miss: if .align assembly directive is logarithmic

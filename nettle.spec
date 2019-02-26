@@ -6,7 +6,7 @@
 #
 Name     : nettle
 Version  : 3.4.1
-Release  : 38
+Release  : 39
 URL      : https://mirrors.kernel.org/gnu/nettle/nettle-3.4.1.tar.gz
 Source0  : https://mirrors.kernel.org/gnu/nettle/nettle-3.4.1.tar.gz
 Source99 : https://mirrors.kernel.org/gnu/nettle/nettle-3.4.1.tar.gz.sig
@@ -69,6 +69,7 @@ Group: Development
 Requires: nettle-lib = %{version}-%{release}
 Requires: nettle-bin = %{version}-%{release}
 Provides: nettle-devel = %{version}-%{release}
+Requires: nettle = %{version}-%{release}
 
 %description dev
 dev components for the nettle package.
@@ -91,14 +92,6 @@ Group: Documentation
 
 %description doc
 doc components for the nettle package.
-
-
-%package extras
-Summary: extras components for the nettle package.
-Group: Default
-
-%description extras
-extras components for the nettle package.
 
 
 %package lib
@@ -132,16 +125,13 @@ license components for the nettle package.
 pushd ..
 cp -a nettle-3.4.1 build32
 popd
-pushd ..
-cp -a nettle-3.4.1 buildavx2
-popd
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1543999830
+export SOURCE_DATE_EPOCH=1551150520
 export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 export FFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
@@ -158,25 +148,16 @@ export LDFLAGS="$LDFLAGS -m32"
 %configure --disable-static --disable-openssl --enable-shared --enable-static  --enable-x86-aesni   --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
 make  %{?_smp_mflags}
 popd
-unset PKG_CONFIG_PATH
-pushd ../buildavx2/
-export CFLAGS="$CFLAGS -m64 -march=haswell"
-export CXXFLAGS="$CXXFLAGS -m64 -march=haswell"
-export LDFLAGS="$LDFLAGS -m64 -march=haswell"
-%configure --disable-static --disable-openssl --enable-shared --enable-static  --enable-x86-aesni
-make  %{?_smp_mflags}
-popd
 %check
 export LANG=C
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 make -C testsuite check
-make -C ../buildavx2/testsuite check
 make -C ../build32/testsuite check
 
 %install
-export SOURCE_DATE_EPOCH=1543999830
+export SOURCE_DATE_EPOCH=1551150520
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/nettle
 cp COPYING.LESSERv3 %{buildroot}/usr/share/package-licenses/nettle/COPYING.LESSERv3
@@ -191,9 +172,6 @@ for i in *.pc ; do ln -s $i 32$i ; done
 popd
 fi
 popd
-pushd ../buildavx2/
-%make_install_avx2
-popd
 %make_install
 
 %files
@@ -205,17 +183,10 @@ popd
 %exclude /usr/bin/nettle-lfib-stream
 %exclude /usr/bin/pkcs1-conv
 %exclude /usr/bin/sexp-conv
-/usr/bin/haswell/nettle-hash
-/usr/bin/haswell/nettle-lfib-stream
-/usr/bin/haswell/nettle-pbkdf2
-/usr/bin/haswell/pkcs1-conv
-/usr/bin/haswell/sexp-conv
 /usr/bin/nettle-pbkdf2
 
 %files dev
 %defattr(-,root,root,-)
-%exclude /usr/lib64/haswell/libhogweed.so
-%exclude /usr/lib64/haswell/libnettle.so
 /usr/include/nettle/aes.h
 /usr/include/nettle/arcfour.h
 /usr/include/nettle/arctwo.h
@@ -296,19 +267,8 @@ popd
 %defattr(0644,root,root,0755)
 %doc /usr/share/info/*
 
-%files extras
-%defattr(-,root,root,-)
-/usr/lib64/haswell/libhogweed.so
-/usr/lib64/haswell/libhogweed.so.4
-/usr/lib64/haswell/libnettle.so
-/usr/lib64/haswell/libnettle.so.6
-
 %files lib
 %defattr(-,root,root,-)
-%exclude /usr/lib64/haswell/libhogweed.so.4
-%exclude /usr/lib64/haswell/libnettle.so.6
-/usr/lib64/haswell/libhogweed.so.4.5
-/usr/lib64/haswell/libnettle.so.6.5
 /usr/lib64/libhogweed.so.4
 /usr/lib64/libhogweed.so.4.5
 /usr/lib64/libnettle.so.6
