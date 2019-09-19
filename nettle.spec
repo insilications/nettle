@@ -6,10 +6,10 @@
 #
 Name     : nettle
 Version  : 3.5.1
-Release  : 40
+Release  : 41
 URL      : https://mirrors.kernel.org/gnu/nettle/nettle-3.5.1.tar.gz
 Source0  : https://mirrors.kernel.org/gnu/nettle/nettle-3.5.1.tar.gz
-Source99 : https://mirrors.kernel.org/gnu/nettle/nettle-3.5.1.tar.gz.sig
+Source1 : https://mirrors.kernel.org/gnu/nettle/nettle-3.5.1.tar.gz.sig
 Summary  : Nettle low-level cryptographic library (symmetric algorithms)
 Group    : Development/Tools
 License  : GPL-2.0 GPL-3.0 LGPL-2.0+ LGPL-3.0
@@ -70,7 +70,6 @@ Group: Development
 Requires: nettle-lib = %{version}-%{release}
 Requires: nettle-bin = %{version}-%{release}
 Provides: nettle-devel = %{version}-%{release}
-Requires: nettle = %{version}-%{release}
 Requires: nettle = %{version}-%{release}
 
 %description dev
@@ -133,7 +132,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1562051839
+export SOURCE_DATE_EPOCH=1568871795
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -148,9 +147,9 @@ make  %{?_smp_mflags}
 pushd ../build32/
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
 export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
-export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32"
-export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32"
-export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32"
+export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32 -mstackrealign"
+export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32 -mstackrealign"
+export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
 %configure --disable-static --disable-openssl --enable-shared --enable-static  --enable-x86-aesni   --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
 make  %{?_smp_mflags}
 popd
@@ -163,7 +162,7 @@ make -C testsuite check
 make -C ../build32/testsuite check
 
 %install
-export SOURCE_DATE_EPOCH=1562051839
+export SOURCE_DATE_EPOCH=1568871795
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/nettle
 cp COPYING.LESSERv3 %{buildroot}/usr/share/package-licenses/nettle/COPYING.LESSERv3
@@ -179,16 +178,17 @@ popd
 fi
 popd
 %make_install
+## Remove excluded files
+rm -f %{buildroot}/usr/bin/nettle-hash
+rm -f %{buildroot}/usr/bin/nettle-lfib-stream
+rm -f %{buildroot}/usr/bin/pkcs1-conv
+rm -f %{buildroot}/usr/bin/sexp-conv
 
 %files
 %defattr(-,root,root,-)
 
 %files bin
 %defattr(-,root,root,-)
-%exclude /usr/bin/nettle-hash
-%exclude /usr/bin/nettle-lfib-stream
-%exclude /usr/bin/pkcs1-conv
-%exclude /usr/bin/sexp-conv
 /usr/bin/nettle-pbkdf2
 
 %files dev
