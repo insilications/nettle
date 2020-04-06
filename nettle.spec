@@ -6,7 +6,7 @@
 #
 Name     : nettle
 Version  : 3.5.1
-Release  : 42
+Release  : 43
 URL      : https://mirrors.kernel.org/gnu/nettle/nettle-3.5.1.tar.gz
 Source0  : https://mirrors.kernel.org/gnu/nettle/nettle-3.5.1.tar.gz
 Source1 : https://mirrors.kernel.org/gnu/nettle/nettle-3.5.1.tar.gz.sig
