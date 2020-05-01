@@ -5,11 +5,11 @@
 # Source0 file verified with key 0xF3599FF828C67298 (nisse@lysator.liu.se)
 #
 Name     : nettle
-Version  : 3.5.1
-Release  : 43
-URL      : https://mirrors.kernel.org/gnu/nettle/nettle-3.5.1.tar.gz
-Source0  : https://mirrors.kernel.org/gnu/nettle/nettle-3.5.1.tar.gz
-Source1 : https://mirrors.kernel.org/gnu/nettle/nettle-3.5.1.tar.gz.sig
+Version  : 3.6
+Release  : 44
+URL      : https://mirrors.kernel.org/gnu/nettle/nettle-3.6.tar.gz
+Source0  : https://mirrors.kernel.org/gnu/nettle/nettle-3.6.tar.gz
+Source1  : https://mirrors.kernel.org/gnu/nettle/nettle-3.6.tar.gz.sig
 Summary  : Nettle low-level cryptographic library (symmetric algorithms)
 Group    : Development/Tools
 License  : GPL-2.0 GPL-3.0 LGPL-2.0+ LGPL-3.0
@@ -29,6 +29,7 @@ BuildRequires : gmp-lib32
 BuildRequires : openssl-dev
 BuildRequires : p11-kit
 BuildRequires : texinfo
+BuildRequires : valgrind-dev
 
 %description
 What is GNU Nettle? A quote from the introduction in the Nettle Manual:
@@ -123,10 +124,10 @@ license components for the nettle package.
 
 
 %prep
-%setup -q -n nettle-3.5.1
-cd %{_builddir}/nettle-3.5.1
+%setup -q -n nettle-3.6
+cd %{_builddir}/nettle-3.6
 pushd ..
-cp -a nettle-3.5.1 build32
+cp -a nettle-3.6 build32
 popd
 
 %build
@@ -134,14 +135,14 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1573790313
+export SOURCE_DATE_EPOCH=1588305173
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
 export CFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-export FFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export FCFLAGS="$FFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export FFLAGS="$FFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 %configure --disable-static --disable-openssl --enable-shared --enable-static  --enable-x86-aesni
 make  %{?_smp_mflags}
@@ -161,15 +162,16 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 make -C testsuite check
+#make -C ../buildavx2/testsuite check
 make -C ../build32/testsuite check
 
 %install
-export SOURCE_DATE_EPOCH=1573790313
+export SOURCE_DATE_EPOCH=1588305173
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/nettle
-cp %{_builddir}/nettle-3.5.1/COPYING.LESSERv3 %{buildroot}/usr/share/package-licenses/nettle/e7d563f52bf5295e6dba1d67ac23e9f6a160fab9
-cp %{_builddir}/nettle-3.5.1/COPYINGv2 %{buildroot}/usr/share/package-licenses/nettle/4cc77b90af91e615a64ae04893fdffa7939db84c
-cp %{_builddir}/nettle-3.5.1/COPYINGv3 %{buildroot}/usr/share/package-licenses/nettle/e88f6aea9379eb98a7bbea965fc7127a64b41ad9
+cp %{_builddir}/nettle-3.6/COPYING.LESSERv3 %{buildroot}/usr/share/package-licenses/nettle/e7d563f52bf5295e6dba1d67ac23e9f6a160fab9
+cp %{_builddir}/nettle-3.6/COPYINGv2 %{buildroot}/usr/share/package-licenses/nettle/4cc77b90af91e615a64ae04893fdffa7939db84c
+cp %{_builddir}/nettle-3.6/COPYINGv3 %{buildroot}/usr/share/package-licenses/nettle/e88f6aea9379eb98a7bbea965fc7127a64b41ad9
 pushd ../build32/
 %make_install32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
@@ -214,6 +216,7 @@ rm -f %{buildroot}/usr/bin/sexp-conv
 /usr/include/nettle/cmac.h
 /usr/include/nettle/ctr.h
 /usr/include/nettle/curve25519.h
+/usr/include/nettle/curve448.h
 /usr/include/nettle/des.h
 /usr/include/nettle/dsa-compat.h
 /usr/include/nettle/dsa.h
@@ -223,6 +226,7 @@ rm -f %{buildroot}/usr/bin/sexp-conv
 /usr/include/nettle/ecdsa.h
 /usr/include/nettle/eddsa.h
 /usr/include/nettle/gcm.h
+/usr/include/nettle/gostdsa.h
 /usr/include/nettle/gosthash94.h
 /usr/include/nettle/hkdf.h
 /usr/include/nettle/hmac.h
@@ -252,6 +256,7 @@ rm -f %{buildroot}/usr/bin/sexp-conv
 /usr/include/nettle/sha1.h
 /usr/include/nettle/sha2.h
 /usr/include/nettle/sha3.h
+/usr/include/nettle/siv-cmac.h
 /usr/include/nettle/twofish.h
 /usr/include/nettle/umac.h
 /usr/include/nettle/version.h
@@ -277,17 +282,17 @@ rm -f %{buildroot}/usr/bin/sexp-conv
 
 %files lib
 %defattr(-,root,root,-)
-/usr/lib64/libhogweed.so.5
-/usr/lib64/libhogweed.so.5.0
-/usr/lib64/libnettle.so.7
-/usr/lib64/libnettle.so.7.0
+/usr/lib64/libhogweed.so.6
+/usr/lib64/libhogweed.so.6.0
+/usr/lib64/libnettle.so.8
+/usr/lib64/libnettle.so.8.0
 
 %files lib32
 %defattr(-,root,root,-)
-/usr/lib32/libhogweed.so.5
-/usr/lib32/libhogweed.so.5.0
-/usr/lib32/libnettle.so.7
-/usr/lib32/libnettle.so.7.0
+/usr/lib32/libhogweed.so.6
+/usr/lib32/libhogweed.so.6.0
+/usr/lib32/libnettle.so.8
+/usr/lib32/libnettle.so.8.0
 
 %files license
 %defattr(0644,root,root,0755)
