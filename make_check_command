@@ -1,3 +1,0 @@
-make -C testsuite check
-#make -C ../buildavx2/testsuite check
-make -C ../build32/testsuite check
