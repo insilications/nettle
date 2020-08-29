@@ -7,7 +7,7 @@
 %define keepstatic 1
 Name     : nettle
 Version  : 3.6
-Release  : 47
+Release  : 48
 URL      : https://mirrors.kernel.org/gnu/nettle/nettle-3.6.tar.gz
 Source0  : https://mirrors.kernel.org/gnu/nettle/nettle-3.6.tar.gz
 Source1  : https://mirrors.kernel.org/gnu/nettle/nettle-3.6.tar.gz.sig
@@ -18,6 +18,7 @@ Requires: nettle-bin = %{version}-%{release}
 Requires: nettle-info = %{version}-%{release}
 Requires: nettle-lib = %{version}-%{release}
 Requires: p11-kit
+BuildRequires : buildreq-configure
 BuildRequires : findutils
 BuildRequires : gcc-dev32
 BuildRequires : gcc-libgcc32
@@ -33,6 +34,9 @@ BuildRequires : openssl-dev
 BuildRequires : openssl-staticdev
 BuildRequires : p11-kit
 BuildRequires : pkgconfig(gmp)
+BuildRequires : pkgconfig(libcrypto)
+BuildRequires : pkgconfig(libssl)
+BuildRequires : pkgconfig(openssl)
 BuildRequires : texinfo
 BuildRequires : valgrind-dev
 # Suppress stripping binaries
@@ -150,7 +154,7 @@ unset http_proxy
 unset https_proxy
 unset no_proxy
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1598732795
+export SOURCE_DATE_EPOCH=1598742499
 export GCC_IGNORE_WERROR=1
 ## altflags_pgo content
 ## pgo generate
@@ -182,17 +186,17 @@ export CXXFLAGS="${CXXFLAGS_GENERATE}"
 export FFLAGS="${FFLAGS_GENERATE}"
 export FCFLAGS="${FCFLAGS_GENERATE}"
 export LDFLAGS="${LDFLAGS_GENERATE}"
- %configure --disable-openssl --enable-shared --enable-static  --enable-x86-aesni
+ %configure  --disable-openssl --enable-shared --enable-static  --enable-x86-aesni
 make  %{?_smp_mflags}  V=1 VERBOSE=1
 
-make -C testsuite check
+make LDFLAGS="${LDFLAGS} -Wl,--whole-archive /usr/lib64/libcrypto.a /usr/lib64/libssl.a -Wl,--no-whole-archive" CFLAGS="${CFLAGS} /usr/lib64/libcrypto.a /usr/lib64/libssl.a -Wl,--no-whole-archive" -C testsuite check
 make clean
 export CFLAGS="${CFLAGS_USE}"
 export CXXFLAGS="${CXXFLAGS_USE}"
 export FFLAGS="${FFLAGS_USE}"
 export FCFLAGS="${FCFLAGS_USE}"
 export LDFLAGS="${LDFLAGS_USE}"
-%configure --disable-openssl --enable-shared --enable-static  --enable-x86-aesni
+%configure  --disable-openssl --enable-shared --enable-static  --enable-x86-aesni
 make  %{?_smp_mflags}  V=1 VERBOSE=1
 
 pushd ../build32/
@@ -208,12 +212,12 @@ export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
 export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32 -mstackrealign"
 export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32 -mstackrealign"
 export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
-%configure --disable-openssl --enable-shared --enable-static  --enable-x86-aesni  --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
+%configure  --disable-openssl --enable-shared --enable-static  --enable-x86-aesni --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
 make  %{?_smp_mflags}  V=1 VERBOSE=1
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1598732795
+export SOURCE_DATE_EPOCH=1598742499
 rm -rf %{buildroot}
 pushd ../build32/
 %make_install32
