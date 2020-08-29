@@ -1,0 +1,1 @@
+--disable-openssl --enable-shared --enable-static  --enable-x86-aesni

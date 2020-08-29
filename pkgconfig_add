@@ -3,3 +3,6 @@
 # desirable. One name per line, no whitespace.
 #
 gmp
+libcrypto
+libssl
+openssl
